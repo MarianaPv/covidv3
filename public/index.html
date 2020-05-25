@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>COVID Tracker</title>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="stylesheet" href="index.css" >
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <script type="text/javascript" src="script.js"></script>
+
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link href="https://fonts.googleapis.com/css2?family=Jost&display=swap" rel="stylesheet">
+    <!--
+          Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div className="html" id="root"></div>
+  
+    
+    <canvas className="html" id="Casos_diarios" style=" float:left;margin-left:9vw" width="500" height="400"
+    ><link rel="stylesheet" href="index.css" ></canvas>
+    <canvas id="Casos_acumuladoslog"  style=" float:left;margin-left:4.7em; margin-bottom:3em" width="600" height="400"></canvas>
+    <canvas id="Casos_acumulados" style=" float:left;margin-left:9vw" width="500" height="400"></canvas>
+    <canvas id="FemvsMas" style=" float:left;margin-left:4.7em" width="340" height="320"></canvas>
+    <canvas id="FallvsRecu" style=" float:left;margin-left:1em" width="280" height="320"></canvas>
+  
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+    <script>
+
+      // HTML to JavaScript converter
+      // By John Krutsch (http://asp.xcentrixlc.com/john)
+      // Moderator of the JavaScript Kit Help Forum: http://freewarejava.com/cgi-bin/Ultimate.cgi
+      
+      
+      const Fecha =[]  ;
+        const CasosT=[] ;
+        const CasosAcu=[];
+        var   Casos_Fem=0;
+        var   Casos_Mas=0;
+        var   Casos_Fall=0;
+        var   Casos_Recu=0;
+        chartit();
+        async function chartit() {
+          await get_casos();
+          var ctx_1= document.getElementById("Casos_diarios").getContext("2d");
+          var Casos_diarios= new Chart(ctx_1,{
+              type:"line",
+              data:{
+                  labels:Fecha,
+                  datasets:[{
+                          label:'Historicos',
+                          data:CasosT,
+                          backgroundColor:
+                              'rgb(255, 0, 0)',
+
+
+                            }]
+                          },
+                          options:{
+                            responsive:false,
+                            maintainAspectRatio: true,
+                            scales:{
+                              xAxes:[{
+                                ticks:{
+                                  beginAtZero:false
+                                }
+                    }]
+                }
+
+          }
+        });
+        var ctx_2= document.getElementById("Casos_acumuladoslog").getContext("2d");
+        var Casos_acumuladoslog= new Chart(ctx_2,{
+            type:"line",
+            data:{
+                labels:Fecha,
+                datasets:[{
+                        label:'Acumulados',
+                        data:CasosAcu,
+                        fill:false,
+                        borderColor:'rgb(255, 128, 0)',
+                        backgroundColor:'rgb(255, 128, 0)',
+                          }]
+                        },
+                        options:{
+                          responsive:false,
+                          maintainAspectRatio: true,
+                          scales:{
+                            yAxes:[{
+                              type:'logarithmic'
+                            }],
+                            xAxes:[{
+                              ticks:{
+                                beginAtZero:false
+                              }
+                  }]
+              }
+
+        }
+      });
+      var ctx_5= document.getElementById("Casos_acumulados").getContext("2d");
+      var Casos_acumulados= new Chart(ctx_5,{
+          type:"line",
+          data:{
+              labels:Fecha,
+              datasets:[{
+                      label:'Acumulados',
+                      data:CasosAcu,
+                      fill:false,
+                      borderColor:'rgb(255, 0, 0)',
+                      backgroundColor:'rgb(255, 0, 0)',
+                        }]
+                      },
+                      options:{
+                        responsive:false,
+                        maintainAspectRatio: true,
+                        scales:{
+                          xAxes:[{
+                            ticks:{
+                              beginAtZero:false
+                            }
+                }]
+            }
+
+      }
+    });
+      var ctx_3= document.getElementById("FemvsMas").getContext("2d");
+      var FemvsMas= new Chart(ctx_3,{
+          type:"pie",
+          data:{
+             labels:["Contagios Femeninos","Contagios Masculinos"],
+              datasets:[{
+                      label:'FemvsMas',
+                      data:[Casos_Fem,Casos_Mas],
+                      backgroundColor:[
+                          'rgb(255, 103, 204)',
+                          'rgb(66, 134, 244,0.5)',
+
+                          ]
+                        }]
+                      },
+                      options:{
+                        responsive:false,
+                        maintainAspectRatio: true,
+                        scales:{
+                          xAxes:[{
+                            ticks:{
+                              beginAtZero:false
+                            }
+                }]
+            }
+
+      }
+    });
+    var ctx_4= document.getElementById("FallvsRecu").getContext("2d");
+    var FallvsRecu= new Chart(ctx_4,{
+        type:"pie",
+        data:{
+            labels:["Fallecidos","Recuperados"],
+            datasets:[{
+                    label:'FallvsRecu',
+                    data:[Casos_Fall,Casos_Recu],
+                    backgroundColor:[
+                        'rgb(0, 0, 0)',
+
+                        ]
+                      }]
+                    },
+                    options:{
+                      responsive:false,
+                      maintainAspectRatio: true,
+                      scales:{
+                        xAxes:[{
+                          ticks:{
+                            beginAtZero:false
+                          }
+              }]
+          }
+
+    }
+  });
+      }
+        async function get_casos(){
+          const response = await fetch('http://ec2-34-238-83-222.compute-1.amazonaws.com:5000/stats');
+          const data = await response.json();
+          var x
+          var acumulador=0
+          for (x in data.Fecha_Infectados) {
+            Fecha[x]=data.Fecha_Infectados[x];
+            CasosT[x]=data.Infectados_Diarios[x];
+            CasosAcu[x]=data.Infectados_Diarios_Acumulados[x];
+          };
+          Casos_Fem=data.Femeninos;
+          Casos_Mas=data.Masculinos;
+          Casos_Fall=data.Muertos_Total;
+          Casos_Recu=data.Recuperados_Total;
+        }
+
+    
+     
+      </script>
+
+   
+
+</html>

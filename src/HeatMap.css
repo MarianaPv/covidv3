@@ -1,0 +1,13 @@
+.toggleButton {
+	position: absolute;
+	top: 150px;
+	left: 32px;
+	z-index: 5;
+}
+
+.mapa{
+	width:50vw;
+	height: 50vh;
+	margin-left: 50vw;
+
+}
