@@ -13,6 +13,13 @@
   }
 }
 
+.mapa{
+	width:50vw;
+	height: 100vh;
+	margin-left: 50vw;
+
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

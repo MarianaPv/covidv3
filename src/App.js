@@ -9,8 +9,7 @@ import './HeatMap.css'
 
 class HeatMap extends Component {
   
-
-
+  
   static defaultProps = {
     center: {
       lat: 	10.963889,
@@ -27,18 +26,31 @@ class HeatMap extends Component {
 		  		{lat: 10.9639, lng: -74.80},
           {lat: 10.9739, lng: -74.81},
           {lat: 10.96, lng: -74.80}
-				]
-  	}
+        ],
+        infoDatabase: []
+  	};
   }
 
-  
+  componentDidMount(){
+    const { infoDatabase } = this.state;
+    fetch("http://localhost:5000/coords")
+    .then(response => response.json())
+    .then((data) => {
+      let{data1} = data;
+      if (infoDatabase.toString() !== data1.toString()){
 
+      this.setState({ infoDatabase: data1.infoDatabase })
+      }
+  });
+   
+  }
+  
   render() {
 
   	const apiKey = {key: 'AIzaSyAps7iV33s_Nk0RwrOpQDzKw8CrJmgKJkk'}
   	const heatMapData = {
-  		positions: this.state.heatmapPoints,
-		options: {
+  		positions: this.state.infoDatabase,
+		  options: {
 			radius: 22,
 			opacity: 0.6
 		}
@@ -47,7 +59,7 @@ class HeatMap extends Component {
   	console.log(this.state)
 
     return (
-      <div style={{ height: '100vh', width: '100%' }}>
+      <div className="main" style={{ height: '100vh', width: '100%' }}>
         <Navigation/>
         <GoogleMapReact
           className ="mapa"
@@ -59,8 +71,8 @@ class HeatMap extends Component {
           heatmap={heatMapData}
          
         />
-        
-        
+
+       
       </div>
     )
   }
