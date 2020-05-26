@@ -55,7 +55,7 @@ class HeatMap extends Component {
   
   	const apiKey = {key: ''}
   	const heatMapData = {
-  		positions: this.state.infoDatabase.map(ele => [{lat:parseFloat(ele.lat), lng:parseFloat(ele.lng)}]),
+  		positions: this.state.infoDatabase.map(ele => {return({lat:parseFloat(ele.lat), lng:parseFloat(ele.lng)})}),
 		  options: {
 			radius: 22,
 			opacity: 0.6
