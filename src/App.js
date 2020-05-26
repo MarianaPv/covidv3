@@ -53,7 +53,7 @@ class HeatMap extends Component {
   render() {
     const { infoDatabase } = this.state;
   
-  	const apiKey = {key: 'AIzaSyAps7iV33s_Nk0RwrOpQDzKw8CrJmgKJkk'}
+  	const apiKey = {key: ''}
   	const heatMapData = {
   		positions: this.state.infoDatabase.map(ele => [{lat:parseFloat(ele.lat), lng:parseFloat(ele.lng)}]),
 		  options: {
