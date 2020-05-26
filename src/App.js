@@ -32,31 +32,39 @@ class HeatMap extends Component {
   }
 
   componentDidMount(){
-    const { infoDatabase } = this.state;
+    
     fetch("http://localhost:5000/coords")
-    .then(response => response.json())
+  
+    .then(res => res.json())
     .then((data) => {
-      let{data1} = data;
-      if (infoDatabase.toString() !== data1.toString()){
-
-      this.setState({ infoDatabase: data1.infoDatabase })
-      }
+      let { data1 } = data;
+      this.setState({
+        infoDatabase:data1
+        
+              })
+      
+    
   });
    
   }
+
+  
   
   render() {
-
+    const { infoDatabase } = this.state;
+  
   	const apiKey = {key: 'AIzaSyAps7iV33s_Nk0RwrOpQDzKw8CrJmgKJkk'}
   	const heatMapData = {
-  		positions: this.state.infoDatabase,
+  		positions: this.state.infoDatabase.map(ele => [{lat:parseFloat(ele.lat), lng:parseFloat(ele.lng)}]),
 		  options: {
 			radius: 22,
 			opacity: 0.6
-		}
-  	}
+    }
+  }
+    
 
-  	console.log(this.state)
+    console.log(heatMapData)
+ 
 
     return (
       <div className="main" style={{ height: '100vh', width: '100%' }}>
@@ -68,7 +76,9 @@ class HeatMap extends Component {
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
           heatmapLibrary={true}
-          heatmap={heatMapData}
+          heatmap= {heatMapData}
+            
+          
          
         />
 
