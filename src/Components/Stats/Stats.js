@@ -27,6 +27,9 @@ class Stats extends Component {
           <canvas ref="canvas"  className="espacio" id="FemvsMas" width="315"height="300"></canvas>
           <canvas ref="canvas" className="espacio2" id="FallvsRecu" width="260"height="300"></canvas>
           </div>
+          <div className="slider">Desliza para ver cómo ha avanzado la enfermedad en el tiempo:
+          <input type="text" class="js-range-slider" name="my_range" value="" />
+          </div>
         </div>
     )
 }

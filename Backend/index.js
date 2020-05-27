@@ -59,6 +59,25 @@ app.get("/coords", (req, res) => {
   });
 });
 
+app.use(express.json());
+app.post("/mobile", (request, response) => {
+  console.log("llego un mensaje",request.body);
+  var lati = request.body.latitud;
+  var lat = lat.substring(0, 3) + "." + lat.substring(3, 9);
+  var lon = request.body.longitud;
+  var lng = lon.substring(0, 3) + "." + lon.substring(3, 9);
+  var timestamp = parseInt(request.body.timestamp) - 3600 * 5 * 1000;
+  const tiempo = new Date(timestamp);
+  var cedula = request.body.cedula;
+  var celular = request.body.celular;
+  var barrio = request.body.barrio;
+  var direccion = request.body.direccion;
+  var estado = request.body.estado;
+  var nombre = request.body.nombre;
+  connection.query(`INSERT INTO camiones (lat, lng, tiempo, cedula, celular, barrio, direccion , estado, nombre)
+  VALUES ('${lat}', '${lng}', '${Tiempo}' ,'${Cedula}','${Celular}' ,'${Barrio}','${Direccion}','${Estado}','${Mombre}');`);
+});
+
 
 
 var ciudad='Barranquilla'

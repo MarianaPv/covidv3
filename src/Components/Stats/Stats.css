@@ -25,3 +25,12 @@
     flex-direction: column;
     margin-bottom: 6vh;
 }
+
+.slider{
+    margin-left: 9vw;
+    margin-right: 9vw;
+    color: blue;
+    font-weight: bold;
+    font-family: 'Jost', sans-serif;
+    font-size:16.5px;
+}

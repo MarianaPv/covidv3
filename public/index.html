@@ -3,7 +3,19 @@
   <head>
     <title>COVID Tracker</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=400, initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+
+    <!--Plugin CSS file with desired skin-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+
+    <!--jQuery-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!--Plugin JavaScript file-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+
+    
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <link rel="stylesheet" href="index.css" >
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -50,144 +62,133 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
-    <script>
-
-      // HTML to JavaScript converter
-      // By John Krutsch (http://asp.xcentrixlc.com/john)
-      // Moderator of the JavaScript Kit Help Forum: http://freewarejava.com/cgi-bin/Ultimate.cgi
-      
-      
-      const Fecha =[]  ;
-        const CasosT=[] ;
-        const CasosAcu=[];
-        var   Casos_Fem=0;
-        var   Casos_Mas=0;
-        var   Casos_Fall=0;
-        var   Casos_Recu=0;
-        chartit();
-        async function chartit() {
-          await get_casos();
-          var ctx_1= document.getElementById("Casos_diarios").getContext("2d");
-          var Casos_diarios= new Chart(ctx_1,{
-              type:"line",
-              data:{
-                  labels:Fecha,
-                  datasets:[{
-                          label:'Historicos',
-                          data:CasosT,
-                          backgroundColor:
-                              'rgb(255, 0, 0)',
-
-
-                            }]
-                          },
-                          options:{
-                            responsive:false,
-                            maintainAspectRatio: true,
-                            scales:{
-                              xAxes:[{
-                                ticks:{
-                                  beginAtZero:false
-                                }
-                    }]
-                }
-
-          }
-        });
-        var ctx_2= document.getElementById("Casos_acumuladoslog").getContext("2d");
-        var Casos_acumuladoslog= new Chart(ctx_2,{
-            type:"line",
-            data:{
-                labels:Fecha,
-                datasets:[{
-                        label:'Acumulados',
-                        data:CasosAcu,
-                        fill:false,
-                        borderColor:'rgb(255, 128, 0)',
-                        backgroundColor:'rgb(255, 128, 0)',
-                          }]
-                        },
-                        options:{
-                          responsive:false,
-                          maintainAspectRatio: true,
-                          scales:{
-                            yAxes:[{
-                              type:'logarithmic'
-                            }],
-                            xAxes:[{
-                              ticks:{
-                                beginAtZero:false
-                              }
-                  }]
-              }
-
-        }
-      });
-      var ctx_5= document.getElementById("Casos_acumulados").getContext("2d");
-      var Casos_acumulados= new Chart(ctx_5,{
+  <script>
+    var Fecha =[]  ;
+    var Fechas=[]  ;
+    const CasosT=[] ;
+    const CasosAcu=[];
+    var   Casos_Fem=0;
+    var   Casos_Mas=0;
+    var   Casos_Fall=0;
+    var   Casos_Recu=0;
+    piecharts()
+    slider();
+    async function chartit() {
+      var ctx_1= document.getElementById("Casos_diarios").getContext("2d");
+      Casos_diarios= new Chart(ctx_1,{
           type:"line",
           data:{
               labels:Fecha,
               datasets:[{
-                      label:'Acumulados',
-                      data:CasosAcu,
-                      fill:false,
-                      borderColor:'rgb(255, 0, 0)',
-                      backgroundColor:'rgb(255, 0, 0)',
+                      label:'Historicos',
+                      data:CasosT,
+                      backgroundColor:
+                          'rgb(255, 0, 0)',
+
+
                         }]
                       },
                       options:{
+                        animation :{
+                          duration:0
+
+                        },
                         responsive:false,
                         maintainAspectRatio: true,
                         scales:{
                           xAxes:[{
                             ticks:{
-                              beginAtZero:false
+                              beginAtZero:false,
+                              maxTicksLimit:5
                             }
                 }]
             }
 
       }
     });
-      var ctx_3= document.getElementById("FemvsMas").getContext("2d");
-      var FemvsMas= new Chart(ctx_3,{
-          type:"pie",
-          data:{
-             labels:["Contagios Femeninos","Contagios Masculinos"],
-              datasets:[{
-                      label:'FemvsMas',
-                      data:[Casos_Fem,Casos_Mas],
-                      backgroundColor:[
-                          'rgb(255, 103, 204)',
-                          'rgb(66, 134, 244,0.5)',
 
-                          ]
-                        }]
+
+    var ctx_2= document.getElementById("Casos_acumuladoslog").getContext("2d");
+    Casos_acumuladoslog= new Chart(ctx_2,{
+        type:"line",
+        data:{
+            labels:Fecha,
+            datasets:[{
+                    label:'Acumulados',
+                    data:CasosAcu,
+                    fill:false,
+                    borderColor:'rgb(255, 128, 0)',
+                    backgroundColor:'rgb(255, 128, 0)',
+                      }]
+                    },
+                    options:{
+                      animation :{
+                        duration:0
+
                       },
-                      options:{
-                        responsive:false,
-                        maintainAspectRatio: true,
-                        scales:{
-                          xAxes:[{
-                            ticks:{
-                              beginAtZero:false
-                            }
-                }]
-            }
+                      responsive:false,
+                      maintainAspectRatio: true,
+                      scales:{
+                        yAxes:[{
+                          type:'logarithmic',
 
-      }
-    });
-    var ctx_4= document.getElementById("FallvsRecu").getContext("2d");
-    var FallvsRecu= new Chart(ctx_4,{
+
+                        }],
+                        xAxes:[{
+                          ticks:{
+                            beginAtZero:false,
+                            maxTicksLimit:8
+                          }
+              }]
+          }
+
+    }
+  });
+  var ctx_5= document.getElementById("Casos_acumulados").getContext("2d");
+  Casos_acumulados= new Chart(ctx_5,{
+      type:"line",
+      data:{
+          labels:Fecha,
+          datasets:[{
+                  label:'Acumulados',
+                  data:CasosAcu,
+                  fill:false,
+                  borderColor:'rgb(255, 0, 0)',
+                  backgroundColor:'rgb(255, 0, 0)',
+                    }]
+                  },
+                  options:{
+                    animation :{
+                      duration:0
+
+                    },
+                    responsive:false,
+                    maintainAspectRatio: true,
+                    scales:{
+                      xAxes:[{
+                        ticks:{
+                          beginAtZero:false,
+                          maxTicksLimit:5
+                        }
+            }]
+        }
+
+  }
+});
+  }
+  async function piecharts(){
+    await get_casos();
+    var ctx_3= document.getElementById("FemvsMas").getContext("2d");
+    var FemvsMas= new Chart(ctx_3,{
         type:"pie",
         data:{
-            labels:["Fallecidos","Recuperados"],
+            labels:["Femenino","Masculino"],
             datasets:[{
-                    label:'FallvsRecu',
-                    data:[Casos_Fall,Casos_Recu],
+                    label:'FemvsMas',
+                    data:[Casos_Fem,Casos_Mas],
                     backgroundColor:[
-                        'rgb(0, 0, 0)',
-
+                        'rgb(255, 103, 204)',
+                        'rgb(66, 134, 244,0.5)',
                         ]
                       }]
                     },
@@ -204,26 +205,88 @@
 
     }
   });
-      }
-        async function get_casos(){
-          const response = await fetch('http://ec2-34-238-83-222.compute-1.amazonaws.com:5000/stats');
-          const data = await response.json();
-          var x
-          var acumulador=0
-          for (x in data.Fecha_Infectados) {
-            Fecha[x]=data.Fecha_Infectados[x];
-            CasosT[x]=data.Infectados_Diarios[x];
-            CasosAcu[x]=data.Infectados_Diarios_Acumulados[x];
-          };
-          Casos_Fem=data.Femeninos;
-          Casos_Mas=data.Masculinos;
-          Casos_Fall=data.Muertos_Total;
-          Casos_Recu=data.Recuperados_Total;
+  var ctx_4= document.getElementById("FallvsRecu").getContext("2d");
+  var FallvsRecu= new Chart(ctx_4,{
+      type:"pie",
+      data:{
+          labels:["Fallecidos","Recuperados"],
+          datasets:[{
+                  label:'FallvsRecu',
+                  data:[Casos_Fall,Casos_Recu],
+                  backgroundColor:[
+                      'rgb(0, 0, 0)',
+
+                      ]
+                    }]
+                  },
+                  options:{
+                    responsive:false,
+                    maintainAspectRatio: true,
+                    scales:{
+                      xAxes:[{
+                        ticks:{
+                          beginAtZero:false
+                        }
+            }]
         }
 
-    
-     
-      </script>
+  }
+
+});
+  }
+    async function get_casos(){
+      const response = await fetch('http://ec2-34-238-83-222.compute-1.amazonaws.com:5000/stats');
+      const data = await response.json();
+      var x
+      var acumulador=0
+      var strac=""
+      for (x in data.Fecha_Infectados) {
+        CasosT[x]=data.Infectados_Diarios[x];
+        CasosAcu[x]=data.Infectados_Diarios_Acumulados[x];
+        strac=data.Fecha_Infectados[x]
+        Fechas[x]=strac.substring(0,10)
+        acumulador=0;
+
+      }
+
+
+      Casos_Fem=data.Femeninos;
+      Casos_Mas=data.Masculinos;
+      Casos_Fall=data.Muertos_Total;
+      Casos_Recu=data.Recuperados_Total;
+      maxrange=Fechas.length
+      Fecha=Fechas
+
+
+
+   }
+
+   async function slider(){
+     await get_casos();
+
+     await chartit()
+
+     $(".js-range-slider").ionRangeSlider({
+      skin: "round",
+      min: 0,
+      max: maxrange,
+      from: maxrange,
+      values: Fechas,
+      onStart: function (data) {
+        get_casos();
+
+      },
+      onChange: function (data) {
+        Fecha=Fechas.slice(0,data.from+1)
+        Casos_diarios.destroy();
+        Casos_acumuladoslog.destroy();
+        Casos_acumulados.destroy();
+        chartit()
+
+
+   }})
+}
+</script>
 
    
 
